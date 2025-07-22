@@ -257,6 +257,13 @@ const createArgumentsQueue = require('createArgumentsQueue');
 const injectScript = require('injectScript');
 const url = 'https://tag.flvcdn.net/lytag.js';
 
+const makeNumberWrapper = (value) => {
+  if (value === '' || value === null || value === undefined) {
+    return undefined;
+  }
+  return makeNumber(value);
+};
+
 const onSuccess = () => {
   log('event snippet: Script loaded successfully.');  
 
@@ -271,8 +278,8 @@ const onSuccess = () => {
       return data.itemsFix.map(element => ({
         itemId: element.itemId,
         categoryId: element.categoryId,
-        price: makeNumber(element.price),
-        quantity: makeNumber(element.quantity),
+        price: makeNumberWrapper(element.price),
+        quantity: makeNumberWrapper(element.quantity),
       }));
     }
     return undefined;
@@ -285,7 +292,7 @@ const onSuccess = () => {
     config: {
       snippetId: data.snippetId,
       transactionId: data.transactionId,
-      value: makeNumber(data.value),
+      value: makeNumberWrapper(data.value),
       currency: 'JPY',
       label: data.label,
       isTest: data.isTest,
